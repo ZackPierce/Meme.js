@@ -47,7 +47,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
-window.Meme = function(image, canvas, top, bottom) {
+window.Meme = function(image, canvas, top, bottom, fontSize) {
 
 	/*
 	Default top and bottom
@@ -101,6 +101,25 @@ window.Meme = function(image, canvas, top, bottom) {
 	};
 	setCanvasDimensions(image.width, image.height);	
 
+	var isNonNanNumber = function(obj) {
+		return Object.prototype.toString.call(obj) == '[object Number]' && obj == +obj;
+	};
+
+	var parsedFontSize = NaN;
+	if (isNonNanNumber(fontSize)) {
+		parsedFontSize = fontSize;
+	} else if (Object.prototype.toString.call(fontSize) == '[object String]') {
+		parsedFontSize = parseFloat(fontSize);
+	}
+
+	var calculateEffectiveFontSize = function() {
+		if (parsedFontSize == +parsedFontSize) {
+			return parsedFontSize;
+		} else {
+			return (canvas.height / 8);
+		}
+	}
+
 	/*
 	Draw a centered meme string
 	*/
@@ -109,10 +128,10 @@ window.Meme = function(image, canvas, top, bottom) {
 
 		// Variable setup
 		topOrBottom = topOrBottom || 'top';
-		var fontSize = (canvas.height / 8);
+		var effectiveFontSize = calculateEffectiveFontSize();
 		var x = canvas.width / 2;
 		if (typeof y === 'undefined') {
-			y = fontSize;
+			y = effectiveFontSize;
 			if (topOrBottom === 'bottom')
 				y = canvas.height - 10;
 		}
@@ -134,7 +153,7 @@ window.Meme = function(image, canvas, top, bottom) {
 					var justThis = words.slice(0, i).join(' ');
 					if (context.measureText(justThis).width < (canvas.width * 1.0)) {
 						drawText(justThis, topOrBottom, y);
-						drawText(words.slice(i, wordsLength).join(' '), topOrBottom, y + fontSize);
+						drawText(words.slice(i, wordsLength).join(' '), topOrBottom, y + effectiveFontSize);
 						return;
 					}
 				}
@@ -144,7 +163,7 @@ window.Meme = function(image, canvas, top, bottom) {
 					var justThis = words.slice(i, wordsLength).join(' ');
 					if (context.measureText(justThis).width < (canvas.width * 1.0)) {
 						drawText(justThis, topOrBottom, y);
-						drawText(words.slice(0, i).join(' '), topOrBottom, y - fontSize);
+						drawText(words.slice(0, i).join(' '), topOrBottom, y - effectiveFontSize);
 						return;
 					}
 				}
@@ -174,8 +193,8 @@ window.Meme = function(image, canvas, top, bottom) {
 		context.fillStyle = 'white';
 		context.strokeStyle = 'black';
 		context.lineWidth = 2;
-		var fontSize = (canvas.height / 8);
-		context.font = fontSize + 'px Impact';
+		var effectiveFontSize = calculateEffectiveFontSize();
+		context.font = effectiveFontSize + 'px Impact';
 		context.textAlign = 'center';
 
 		// Draw them!

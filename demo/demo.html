@@ -12,7 +12,7 @@
 		text-align: center;
 	}
 
-	#top-line, #bottom-line {
+	#top-line, #bottom-line, #font-size {
 		padding: .5em;
 		border: 1px solid #999;
 		font: inherit;
@@ -36,8 +36,12 @@
 
 		Meme('example.jpg', 'canvas');
 
-		$('#top-line, #bottom-line').keyup(function() {
-			Meme('example.jpg', 'canvas', $('#top-line').val(), $('#bottom-line').val());
+		$('#top-line, #bottom-line, #font-size').keyup(function() {
+			Meme('example.jpg', 'canvas', $('#top-line').val(), $('#bottom-line').val(), $('#font-size').val());
+		});
+
+		$('#font-size').change(function() {
+			Meme('example.jpg', 'canvas', $('#top-line').val(), $('#bottom-line').val(), $('#font-size').val());
 		});
 
 	});
@@ -52,6 +56,7 @@
 
 	<input id="top-line" placeholder="top line">
 	<input id="bottom-line" placeholder="bottom line">
+    <input id="font-size" type="number" step="1" value="60">
 
 	<canvas id="canvas"></canvas>
 
