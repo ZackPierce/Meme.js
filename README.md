@@ -23,4 +23,8 @@ You can also pass in an image:
      var can = document.getElementById('canvasID');
      Meme(img, can, 'you ignore my calls', 'I ignore your screams of mercy');
 
+If you're interesting in fine-tuning the text size, you can optionally incorporate a fifth parameter for fontSize.
+
+    Meme('firstWorldProblems.jpg', 'canvasID', 'My single-function library', 'has more than four arguments', 80); 
+
 License info is in LICENSE.txt.
